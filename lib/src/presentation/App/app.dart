@@ -9,7 +9,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-       data: MediaQueryData.fromView(View.of(context)).copyWith(
+      data: MediaQueryData.fromView(View.of(context)).copyWith(
         textScaler: const TextScaler.linear(1.0),
       ),
       child: MaterialApp(
