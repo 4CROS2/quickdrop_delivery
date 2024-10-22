@@ -11,4 +11,12 @@ class DeliveryAgentEntity {
   final String phone;
   final String name;
   final String lastname;
+
+  static const DeliveryAgentEntity empty = DeliveryAgentEntity(
+    id: '',
+    email: '',
+    phone: '',
+    name: '',
+    lastname: '',
+  );
 }

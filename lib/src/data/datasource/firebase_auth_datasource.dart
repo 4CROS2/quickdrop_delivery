@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FirebaseAuthDatasource {
   FirebaseAuthDatasource({
@@ -10,6 +13,25 @@ class FirebaseAuthDatasource {
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
+
+  Stream<Map<String, dynamic>?> deliveryStatus() {
+    return _firebaseAuth.userChanges().switchMap((User? user) {
+      if (user != null) {
+        // Cuando el usuario está autenticado, consulta la colección 'deliveryAgents' usando el uid
+        return _firestore
+            .collection('deliveryAgents')
+            .doc(user.uid)
+            .snapshots()
+            .map(
+              (DocumentSnapshot<Map<String, dynamic>> snapshot) =>
+                  snapshot.data(),
+            );
+      } else {
+        // Si no hay usuario autenticado, devuelve null
+        return Stream<Map<String, dynamic>?>.value(<String, dynamic>{});
+      }
+    });
+  }
 
   Future<UserCredential> loginWithEmail({
     required String email,
@@ -64,7 +86,10 @@ class FirebaseAuthDatasource {
       );
 
       // Guardar información adicional en Firestore
-      await _firestore.collection('deliveryAgents').doc(userCredential.user?.uid).set(
+      await _firestore
+          .collection('deliveryAgents')
+          .doc(userCredential.user?.uid)
+          .set(
         <String, String>{
           'name': name,
           'lastName': lastName,

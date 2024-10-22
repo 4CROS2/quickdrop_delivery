@@ -11,6 +11,22 @@ class IAuthRepository implements AuthRepository {
   final FirebaseAuthDatasource _datasource;
 
   @override
+  Stream<DeliveryAgentModel> deliveryStatus() {
+    // Obtener el stream del datasource
+    final Stream<Map<String, dynamic>?> response = _datasource.deliveryStatus();
+
+    // Convertir el Stream<Map<String, dynamic>?> a Stream<DeliveryAgentModel>
+    final Stream<DeliveryAgentModel> deliveryAgentStream = response
+        .where((Map<String, dynamic>? data) =>
+            data != null) // Filtrar los datos nulos
+        .map(
+          (Map<String, dynamic>? data) =>
+              DeliveryAgentModel.fromJson(json: data!),
+        );
+    return deliveryAgentStream;
+  }
+
+  @override
   Future<DeliveryAgentModel> login(
       {required String email, required String password}) async {
     final UserCredential userCredential = await _datasource.loginWithEmail(

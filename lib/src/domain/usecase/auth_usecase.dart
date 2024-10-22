@@ -7,6 +7,11 @@ class AuthUseCase {
   }) : _repository = repository;
   final AuthRepository _repository;
 
+  Stream<DeliveryAgentEntity> deliveryStatus() {
+    final Stream<DeliveryAgentEntity> data = _repository.deliveryStatus();
+    return data;
+  }
+
   Future<DeliveryAgentEntity> login(
       {required String email, required String password}) async {
     return await _repository.login(

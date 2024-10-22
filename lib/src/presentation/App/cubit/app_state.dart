@@ -5,27 +5,21 @@ enum AppStatus { authenticated, unauthenticated, loading }
 class AppState extends Equatable {
   const AppState({
     this.appStatus = AppStatus.loading,
-    this.user = const DeliveryAgentEntity(
-      email: '',
-      id: '',
-      lastname: '',
-      name: '',
-      phone: '',
-    ),
+    this.deliveyAgent = DeliveryAgentEntity.empty,
   });
-  final DeliveryAgentEntity user;
+  final DeliveryAgentEntity deliveyAgent;
   final AppStatus appStatus;
 
   AppState copyWith({
-    DeliveryAgentEntity? user,
+    DeliveryAgentEntity? deliveryAgent,
     AppStatus? appStatus,
   }) {
     return AppState(
       appStatus: appStatus ?? this.appStatus,
-      user: user ?? this.user,
+      deliveyAgent: deliveryAgent ?? deliveyAgent,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[appStatus, user];
+  List<Object?> get props => <Object?>[appStatus, deliveyAgent];
 }

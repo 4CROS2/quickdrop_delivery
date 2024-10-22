@@ -1,49 +1,74 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickdrop_delivery/src/domain/entity/delivery_agent_entity.dart';
+import 'package:quickdrop_delivery/src/domain/usecase/auth_usecase.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  AppCubit({required FirebaseAuth firebasAuth})
-      : _firebaseAuth = firebasAuth,
+  AppCubit({
+    required AuthUseCase usecase,
+  })  : _useCase = usecase,
         super(AppState()) {
-    _firebaseAuth.userChanges().listen(
-      (User? user) {
-        deliveryState(user: user);
-      },
+    _authSubscription();
+  }
+
+  final AuthUseCase _useCase;
+  StreamSubscription<DeliveryAgentEntity>? _subscription;
+
+  void _authSubscription() {
+    _emitLoadingState();
+    _subscription = _useCase.deliveryStatus().listen(
+          _onDeliveryAgentUpdated,
+          onError: _onError,
+          onDone: _onDone,
+        );
+  }
+
+  void _emitLoadingState() {
+    emit(state.copyWith(appStatus: AppStatus.loading));
+  }
+
+  void _emitAuthenticatedState(DeliveryAgentEntity deliveryAgent) {
+    emit(
+      state.copyWith(
+        deliveryAgent: deliveryAgent,
+        appStatus: AppStatus.authenticated,
+      ),
     );
   }
-  final FirebaseAuth _firebaseAuth;
 
-  void deliveryState({required User? user}) {
-    if (user == null) {
-      emit(
-        state.copyWith(
-          appStatus: AppStatus.unauthenticated,
-          user: const DeliveryAgentEntity(
-            id: '',
-            email: '',
-            lastname: '',
-            name: '',
-            phone: '',
-          ),
-        ),
-      );
+  void _emitUnauthenticatedState() {
+    emit(
+      state.copyWith(
+        deliveryAgent: DeliveryAgentEntity.empty,
+        appStatus: AppStatus.unauthenticated,
+      ),
+    );
+  }
+
+  void _onDeliveryAgentUpdated(DeliveryAgentEntity deliveryAgent) {
+    if (deliveryAgent.id.isNotEmpty) {
+      _emitAuthenticatedState(deliveryAgent);
     } else {
-      emit(
-        state.copyWith(
-          appStatus: AppStatus.authenticated,
-          user: DeliveryAgentEntity(
-            id: user.uid,
-            email: user.email ?? '',
-            lastname: '',
-            name: '',
-            phone: '',
-          ),
-        ),
-      );
+      _emitUnauthenticatedState();
     }
+  }
+
+  // ignore: always_specify_types
+  void _onError(error) {
+    _emitUnauthenticatedState();
+  }
+
+  void _onDone() {
+    _emitUnauthenticatedState();
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }
