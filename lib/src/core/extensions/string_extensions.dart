@@ -12,7 +12,15 @@ extension StringExtensions on String {
     if (isEmpty) {
       return '';
     }
-    return this[0].toUpperCase() + substring(1).toLowerCase();
+
+    for (int i = 0; i < length; i++) {
+      if (RegExp(r'[a-zA-Z]').hasMatch(this[i])) {
+        return substring(0, i) +
+            this[i].toUpperCase() +
+            substring(i + 1).toLowerCase();
+      }
+    }
+    return this;
   }
 
   String capitalizeSentences() {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:quickdrop_delivery/src/core/extensions/document_snapshot_stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FirebaseAuthDatasource {
@@ -17,15 +18,11 @@ class FirebaseAuthDatasource {
   Stream<Map<String, dynamic>?> deliveryStatus() {
     return _firebaseAuth.userChanges().switchMap((User? user) {
       if (user != null) {
-        // Cuando el usuario está autenticado, consulta la colección 'deliveryAgents' usando el uid
         return _firestore
             .collection('deliveryAgents')
             .doc(user.uid)
             .snapshots()
-            .map(
-              (DocumentSnapshot<Map<String, dynamic>> snapshot) =>
-                  snapshot.data(),
-            );
+            .toMapJsonStream();
       } else {
         // Si no hay usuario autenticado, devuelve null
         return Stream<Map<String, dynamic>?>.value(<String, dynamic>{});
@@ -43,6 +40,17 @@ class FirebaseAuthDatasource {
         email: email,
         password: password,
       );
+      // Verificar que el usuario esté en la colección correspondiente
+      final DocumentSnapshot<Map<String, dynamic>> docSnapshot =
+          await _firestore
+              .collection('deliveryAgents')
+              .doc(userCredential.user?.uid)
+              .get();
+
+      if (!docSnapshot.exists) {
+        await logout();
+        throw '506';
+      }
       return userCredential;
     } on FirebaseAuthException catch (exception) {
       String errorCode;

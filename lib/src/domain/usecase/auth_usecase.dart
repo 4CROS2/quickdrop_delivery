@@ -12,8 +12,10 @@ class AuthUseCase {
     return data;
   }
 
-  Future<DeliveryAgentEntity> login(
-      {required String email, required String password}) async {
+  Future<DeliveryAgentEntity> login({
+    required String email,
+    required String password,
+  }) async {
     return await _repository.login(
       email: email,
       password: password,
@@ -36,7 +38,7 @@ class AuthUseCase {
     );
   }
 
-  Future<void> logout() async {
+  Future<void> logOut() async {
     return await _repository.logout();
   }
 }

@@ -11,7 +11,9 @@ class AppCubit extends Cubit<AppState> {
   AppCubit({
     required AuthUseCase usecase,
   })  : _useCase = usecase,
-        super(AppState()) {
+        super(
+          AppState(),
+        ) {
     _authSubscription();
   }
 
@@ -21,9 +23,10 @@ class AppCubit extends Cubit<AppState> {
   void _authSubscription() {
     _emitLoadingState();
     _subscription = _useCase.deliveryStatus().listen(
-          _onDeliveryAgentUpdated,
+          (DeliveryAgentEntity deliveryAgent) => _onDeliveryAgentUpdated(
+            deliveryAgent: deliveryAgent,
+          ),
           onError: _onError,
-          onDone: _onDone,
         );
   }
 
@@ -49,7 +52,7 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
-  void _onDeliveryAgentUpdated(DeliveryAgentEntity deliveryAgent) {
+  void _onDeliveryAgentUpdated({required DeliveryAgentEntity deliveryAgent}) {
     if (deliveryAgent.id.isNotEmpty) {
       _emitAuthenticatedState(deliveryAgent);
     } else {
@@ -59,10 +62,6 @@ class AppCubit extends Cubit<AppState> {
 
   // ignore: always_specify_types
   void _onError(error) {
-    _emitUnauthenticatedState();
-  }
-
-  void _onDone() {
     _emitUnauthenticatedState();
   }
 

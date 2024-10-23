@@ -6,6 +6,7 @@ import 'package:quickdrop_delivery/src/data/repository/auth_repository_impl.dart
 import 'package:quickdrop_delivery/src/domain/repository/auth_repository.dart';
 import 'package:quickdrop_delivery/src/domain/usecase/auth_usecase.dart';
 import 'package:quickdrop_delivery/src/presentation/App/cubit/app_cubit.dart';
+import 'package:quickdrop_delivery/src/presentation/login/cubit/login_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -40,6 +41,11 @@ Future<void> init() async {
   sl.registerFactory<AppCubit>(
     () => AppCubit(
       usecase: sl<AuthUseCase>(),
+    ),
+  );
+  sl.registerFactory<LoginCubit>(
+    () => LoginCubit(
+      authUseCase: sl<AuthUseCase>(),
     ),
   );
 }
