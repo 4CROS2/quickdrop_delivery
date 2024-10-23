@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quickdrop_delivery/src/data/datasource/firebase_auth_datasource.dart';
 import 'package:quickdrop_delivery/src/data/repository/auth_repository_impl.dart';
 import 'package:quickdrop_delivery/src/domain/repository/auth_repository.dart';
@@ -18,11 +19,20 @@ Future<void> init() async {
   sl.registerLazySingleton<FirebaseFirestore>(
     () => FirebaseFirestore.instance,
   );
+  sl.registerLazySingleton<GoogleSignIn>(
+    () => GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    ),
+  );
   //datasource
   sl.registerLazySingleton<FirebaseAuthDatasource>(
     () => FirebaseAuthDatasource(
       firebaseAuth: sl<FirebaseAuth>(),
       firestore: sl<FirebaseFirestore>(),
+      googleSigin: sl<GoogleSignIn>(),
     ),
   );
   //repository

@@ -11,6 +11,7 @@ class LoginCubit extends Cubit<LoginState> {
       : _authUseCase = authUseCase,
         super(const LoginState());
   final AuthUseCase _authUseCase;
+
   String localizationResponse({
     required String code,
     required AppLocalizations localizations,
@@ -26,8 +27,10 @@ class LoginCubit extends Cubit<LoginState> {
         return localizations.userNotFound;
       case '504':
         return localizations.wrongPassword;
+      case '505':
+        return 'cuenta no registrada en la aplicacion';
       case '506':
-        return 'cuenta no registrada';
+        return 'error al autenticar';
       default:
         return localizations.unknownError;
     }
@@ -36,17 +39,33 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login({required String email, required String password}) async {
     try {
       emit(LoginLoading());
-      final DeliveryAgentEntity response =
-          await _authUseCase.login(email: email, password: password);
-      emit(
-        LoginSuccess(deliveryAgent: response),
+      await _authUseCase.login(
+        email: email,
+        password: password,
       );
     } catch (e) {
-      emit(
-        LoginError(
-          message: e.toString(),
-        ),
-      );
+      if (!isClosed) {
+        emit(
+          LoginError(
+            message: e.toString(),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    try {
+      emit(LoginLoading());
+      await _authUseCase.googleSignin();
+    } catch (e) {
+      if (!isClosed) {
+        emit(
+          LoginError(
+            message: e.toString(),
+          ),
+        );
+      }
     }
   }
 }

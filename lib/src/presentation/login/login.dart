@@ -144,7 +144,9 @@ class _LoginState extends State<Login> {
                         child: AuthDivider(),
                       ),
                       OtherLoginBtn(
-                        onTap: () {},
+                        onTap: () {
+                          context.read<LoginCubit>().loginWithGoogle();
+                        },
                         svgImage: 'assets/images/svg/google.svg',
                         label: 'google',
                       ),

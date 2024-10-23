@@ -60,4 +60,10 @@ class IAuthRepository implements AuthRepository {
   Future<void> logout() async {
     await _datasource.logout();
   }
+
+  @override
+  Future<DeliveryAgentModel> googleSignin() async {
+    final UserCredential response = await _datasource.signInWithGoogle();
+    return DeliveryAgentModel.fromFireBase(credential: response);
+  }
 }

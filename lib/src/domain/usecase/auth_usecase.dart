@@ -38,6 +38,9 @@ class AuthUseCase {
     );
   }
 
+  Future<DeliveryAgentEntity> googleSignin() async =>
+      await _repository.googleSignin();
+
   Future<void> logOut() async {
     return await _repository.logout();
   }
