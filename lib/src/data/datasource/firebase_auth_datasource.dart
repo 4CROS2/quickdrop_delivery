@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quickdrop_delivery/src/core/extensions/document_snapshot_stream_extension.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -9,12 +11,14 @@ class FirebaseAuthDatasource {
   FirebaseAuthDatasource({
     required FirebaseAuth firebaseAuth,
     required FirebaseFirestore firestore,
+    required GoogleSignIn googleSigin,
   })  : _firebaseAuth = firebaseAuth,
-        _firestore = firestore;
+        _firestore = firestore,
+        _googleSignIn = googleSigin;
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
-
+  final GoogleSignIn _googleSignIn;
   Stream<Map<String, dynamic>?> deliveryStatus() {
     return _firebaseAuth.userChanges().switchMap((User? user) {
       if (user != null) {
@@ -49,7 +53,7 @@ class FirebaseAuthDatasource {
 
       if (!docSnapshot.exists) {
         await logout();
-        throw '506';
+        throw '505';
       }
       return userCredential;
     } on FirebaseAuthException catch (exception) {
@@ -131,7 +135,65 @@ class FirebaseAuthDatasource {
     }
   }
 
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      // Iniciar sesión con Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw '505';
+      }
+
+      // Obtener los detalles de autenticación de la solicitud
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Crear credenciales para Firebase con el token de Google
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Verificar si el usuario ya está registrado en Firestore
+      final DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
+          .collection('deliveryAgents')
+          .doc(googleUser.id)
+          .get();
+
+      if (!userDoc.exists) {
+        await logout();
+        throw '505';
+      }
+
+      // Realizar el login con Firebase
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+
+      // (Opcional) Actualizar la información adicional del usuario en Firestore
+      await _firestore
+          .collection('deliveryAgents')
+          .doc(userCredential.user?.uid)
+          .set(
+        <String, dynamic>{
+          'name': googleUser.displayName,
+          'email': googleUser.email,
+          'photoUrl': googleUser.photoUrl,
+          'phone': '',
+        },
+        // Evita sobreescribir toda la información
+        SetOptions(merge: true),
+      );
+
+      return userCredential;
+    } on PlatformException {
+      throw '506';
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     await _firebaseAuth.signOut();
+    await _googleSignIn.signOut();
   }
 }

@@ -14,5 +14,6 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
+  Future<DeliveryAgentEntity> googleSignin();
   Future<void> logout();
 }
