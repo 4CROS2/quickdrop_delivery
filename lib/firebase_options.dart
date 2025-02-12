@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCDFeISPW47NK0Mw1C-iFjiXQFOcfhEI98',
-    appId: '1:241432358313:android:d8fde9de7b332d802328b8',
+    appId: '1:241432358313:android:f0cf8b2bc7a3c8dc2328b8',
     messagingSenderId: '241432358313',
     projectId: 'quickdrop-ebc08',
     storageBucket: 'quickdrop-ebc08.appspot.com',
@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC04yLhw1VDp52ohlYGcOii5AZV9jMQZM0',
-    appId: '1:241432358313:ios:9c2f2afff15d50922328b8',
+    appId: '1:241432358313:ios:2b664e4140d75f322328b8',
     messagingSenderId: '241432358313',
     projectId: 'quickdrop-ebc08',
     storageBucket: 'quickdrop-ebc08.appspot.com',
+    androidClientId:
+        '241432358313-1pjm5ldlgc2ohgmqsf0csi20v22g4vd4.apps.googleusercontent.com',
     iosClientId:
         '241432358313-kjrdlljl4n58djgecjg13hpe9fjg98qj.apps.googleusercontent.com',
     iosBundleId: 'com.quickdropltda.quickdropDelivery',
