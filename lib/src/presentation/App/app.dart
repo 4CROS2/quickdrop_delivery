@@ -9,8 +9,25 @@ import 'package:quickdrop_delivery/src/presentation/home/home.dart';
 import 'package:quickdrop_delivery/src/presentation/loading/loading.dart';
 import 'package:quickdrop_delivery/src/presentation/login/login.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +36,7 @@ class App extends StatelessWidget {
       child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {
           return MediaQuery(
-            data: MediaQueryData.fromView(View.of(context)).copyWith(
+            data: MediaQuery.of(context).copyWith(
               textScaler: const TextScaler.linear(1.0),
             ),
             child: MaterialApp(
@@ -40,7 +57,7 @@ class App extends StatelessWidget {
               ],
               home: Scaffold(
                 body: AnimatedSwitcher(
-                  duration: Constants.animationTransition,
+                  duration: Constants.animationTransition * 2,
                   transitionBuilder: (
                     Widget child,
                     Animation<double> animation,

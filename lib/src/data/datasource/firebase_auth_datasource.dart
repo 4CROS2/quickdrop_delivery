@@ -9,16 +9,13 @@ import 'package:rxdart/rxdart.dart';
 
 class FirebaseAuthDatasource {
   FirebaseAuthDatasource({
-    required FirebaseAuth firebaseAuth,
-    required FirebaseFirestore firestore,
     required GoogleSignIn googleSigin,
-  })  : _firebaseAuth = firebaseAuth,
-        _firestore = firestore,
-        _googleSignIn = googleSigin;
+  }) : _googleSignIn = googleSigin;
 
-  final FirebaseAuth _firebaseAuth;
-  final FirebaseFirestore _firestore;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn;
+
   Stream<Map<String, dynamic>?> deliveryStatus() {
     return _firebaseAuth.userChanges().switchMap((User? user) {
       if (user != null) {
@@ -138,6 +135,7 @@ class FirebaseAuthDatasource {
   Future<UserCredential> signInWithGoogle() async {
     try {
       // Iniciar sesión con Google
+      await logout();
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
@@ -154,35 +152,20 @@ class FirebaseAuthDatasource {
         idToken: googleAuth.idToken,
       );
 
+      // Realizar el login con Firebase
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+
       // Verificar si el usuario ya está registrado en Firestore
       final DocumentSnapshot<Map<String, dynamic>> userDoc = await _firestore
           .collection('deliveryAgents')
-          .doc(googleUser.id)
+          .doc(userCredential.user?.uid)
           .get();
 
       if (!userDoc.exists) {
         await logout();
         throw '505';
       }
-
-      // Realizar el login con Firebase
-      final UserCredential userCredential =
-          await _firebaseAuth.signInWithCredential(credential);
-
-      // (Opcional) Actualizar la información adicional del usuario en Firestore
-      await _firestore
-          .collection('deliveryAgents')
-          .doc(userCredential.user?.uid)
-          .set(
-        <String, dynamic>{
-          'name': googleUser.displayName,
-          'email': googleUser.email,
-          'photoUrl': googleUser.photoUrl,
-          'phone': '',
-        },
-        // Evita sobreescribir toda la información
-        SetOptions(merge: true),
-      );
 
       return userCredential;
     } on PlatformException {
