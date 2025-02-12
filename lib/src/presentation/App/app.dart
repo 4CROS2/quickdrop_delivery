@@ -9,9 +9,14 @@ import 'package:quickdrop_delivery/src/presentation/home/home.dart';
 import 'package:quickdrop_delivery/src/presentation/loading/loading.dart';
 import 'package:quickdrop_delivery/src/presentation/login/login.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
 
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
