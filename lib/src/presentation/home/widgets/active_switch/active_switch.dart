@@ -76,7 +76,6 @@ class _ActiveSwitchState extends State<ActiveSwitch>
               Switch(
                 value: state.isActive,
                 padding: const EdgeInsets.only(right: 20.0),
-                activeTrackColor: Constants.secondaryColor,
                 onChanged: (bool? value) =>
                     sl<ActiveSwitchCubit>().changeStatus(),
               ),

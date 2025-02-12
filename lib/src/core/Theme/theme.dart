@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Theme {
+class AppTheme {
   static ThemeData? _instance;
 
   static ThemeData get instance {

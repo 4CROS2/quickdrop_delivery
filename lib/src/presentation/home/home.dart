@@ -18,7 +18,9 @@ class _HomeState extends State<Home> {
       drawer: Drawer(),
       appBar: AppBar(
         elevation: 2,
-        actions: <Widget>[ActiveSwitch()],
+        actions: <Widget>[
+          ActiveSwitch(),
+        ],
       ),
       body: Center(
         child: Column(
@@ -30,7 +32,7 @@ class _HomeState extends State<Home> {
                 sl<AuthUseCase>().logOut();
               },
               child: Text('close sesion'),
-            )
+            ),
           ],
         ),
       ),
