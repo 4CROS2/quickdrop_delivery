@@ -23,6 +23,14 @@ dependencies:
   google_sign_in: ^6.2.2
   rxdart: ^0.28.0
   flutter_svg: ^2.0.17
+  extensions: 
+    git: 
+      url: https://github.com/4CROS2/string_extensions.git 
+      ref: main
+  apptoastification:
+    git:
+      url: https://github.com/4CROS2/apptoastification.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

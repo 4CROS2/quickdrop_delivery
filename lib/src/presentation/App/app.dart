@@ -16,7 +16,19 @@ class App extends StatefulWidget {
   State<App> createState() => _AppState();
 }
 
-class _AppState extends State<App> {
+class _AppState extends State<App> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
@@ -24,7 +36,7 @@ class _AppState extends State<App> {
       child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {
           return MediaQuery(
-            data: MediaQueryData.fromView(View.of(context)).copyWith(
+            data: MediaQuery.of(context).copyWith(
               textScaler: const TextScaler.linear(1.0),
             ),
             child: MaterialApp(
@@ -45,7 +57,7 @@ class _AppState extends State<App> {
               ],
               home: Scaffold(
                 body: AnimatedSwitcher(
-                  duration: Constants.animationTransition,
+                  duration: Constants.animationTransition * 2,
                   transitionBuilder: (
                     Widget child,
                     Animation<double> animation,
