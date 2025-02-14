@@ -30,9 +30,9 @@ class Constants {
     fontSize: 12,
   );
   static Color primaryColor = const Color(
-    0xFF7C96F4,
+    0xFFFFA500,
   );
-  static const Color secondaryColor = Color.fromRGBO(255, 145, 0, 0.925);
+  static const Color secondaryColor = Color(0xFF333333);
 
   static EdgeInsets mainPadding = const EdgeInsets.all(12);
   static EdgeInsets buttonPadding = const EdgeInsets.all(15);

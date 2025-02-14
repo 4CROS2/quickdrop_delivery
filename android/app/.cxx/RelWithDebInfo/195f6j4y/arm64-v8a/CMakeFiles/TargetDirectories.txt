@@ -1,0 +1,2 @@
+D:/Mis programas/tesis_user_app/quickdrop_delivery/android/app/.cxx/RelWithDebInfo/195f6j4y/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Mis programas/tesis_user_app/quickdrop_delivery/android/app/.cxx/RelWithDebInfo/195f6j4y/arm64-v8a/CMakeFiles/rebuild_cache.dir
