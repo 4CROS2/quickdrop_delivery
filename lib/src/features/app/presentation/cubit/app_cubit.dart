@@ -31,7 +31,11 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void _emitLoadingState() {
-    emit(state.copyWith(appStatus: AppStatus.loading));
+    emit(
+      state.copyWith(
+        appStatus: AppStatus.loading,
+      ),
+    );
   }
 
   void _emitAuthenticatedState(DeliveryAgentEntity deliveryAgent) {
