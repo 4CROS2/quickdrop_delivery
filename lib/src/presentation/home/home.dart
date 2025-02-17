@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quickdrop_delivery/src/domain/entity/order_entity.dart';
 import 'package:quickdrop_delivery/src/presentation/home/widgets/active_switch/active_switch.dart';
 import 'package:quickdrop_delivery/src/presentation/home/widgets/orders/orders.dart';
 
@@ -23,37 +22,7 @@ class _HomeState extends State<Home> {
           ActiveSwitch(),
         ],
       ),
-      body: Orders(
-        orders: <OrderEntity>[
-          /* OrderEntity(
-            image: 'laptop.png',
-            productName: 'Laptop',
-            address: 'Calle Principal 123',
-            createdAt: DateTime.now(),
-
-          ), */
-         /*  OrderEntity(
-            image: 'smartphone.png',
-            productName: 'Smartphone',
-            address: 'Avenida Secundaria 456',
-            createdAt: DateTime.now().subtract(
-              const Duration(
-                days: 1,
-              ),
-            ),
-          ),
-          OrderEntity(
-            image: 'tablet.png',
-            productName: 'Tablet',
-            address: 'Calle Terciaria 789',
-            createdAt: DateTime.now().subtract(
-              const Duration(
-                days: 2,
-              ),
-            ),
-          ) */
-        ],
-      ),
+      body: Orders(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
@@ -14,11 +15,11 @@ class OrderEntity extends Equatable {
 
   final String image;
   final String productName;
-  final String address;
+  final GeoPoint address;
   final DateTime createdAt;
   final String customerName;
   final String contactNumber;
-  final String orderStatus; // e.g., 'Pending', 'Delivered'
+  final String orderStatus;
   final double productPrice;
 
   @override

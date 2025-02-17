@@ -67,7 +67,6 @@ class AppCubit extends Cubit<AppState> {
 
   void changeTheme({required AppThemeState themeMode}) {
     emit(state.copyWith(appTheme: themeMode));
-    print(state.appTheme);
   }
 
   @override

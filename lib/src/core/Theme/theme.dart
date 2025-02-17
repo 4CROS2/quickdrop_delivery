@@ -37,6 +37,9 @@ class AppTheme {
         colorSchemeSeed: Constants.secondaryColor,
         brightness: Brightness.dark,
         fontFamily: 'Questrial',
-        pageTransitionsTheme: _pageTransition);
+        pageTransitionsTheme: _pageTransition,
+        cardTheme: CardTheme(
+          color: Colors.grey,
+        ));
   }
 }

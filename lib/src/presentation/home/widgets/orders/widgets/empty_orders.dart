@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 
 class EmptyOrders extends StatefulWidget {
@@ -35,7 +34,7 @@ class _EmptyOrdersState extends State<EmptyOrders> {
 
     return Center(
       child: Padding(
-        padding: Constants.mainPadding,
+        padding: Constants.mainPadding * 2,
         child: Material(
           borderRadius: Constants.mainBorderRadius,
           child: Padding(
@@ -60,12 +59,6 @@ class _EmptyOrdersState extends State<EmptyOrders> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    context.push('/test');
-                  },
-                  child: Text('pagina de pruebas'),
-                )
               ],
             ),
           ),

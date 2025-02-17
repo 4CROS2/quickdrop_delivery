@@ -33,6 +33,7 @@ dependencies:
       url: https://github.com/4CROS2/apptoastification.git
       ref: main
   go_router: ^14.8.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
