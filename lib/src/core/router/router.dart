@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickdrop_delivery/src/core/router/listener.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/presentation/login.dart';
 import 'package:quickdrop_delivery/src/injection/injection_container.dart';
-import 'package:quickdrop_delivery/src/presentation/App/cubit/app_cubit.dart';
-import 'package:quickdrop_delivery/src/presentation/home/home.dart';
-import 'package:quickdrop_delivery/src/presentation/loading/loading.dart';
-import 'package:quickdrop_delivery/src/presentation/login/login.dart';
-import 'package:quickdrop_delivery/src/presentation/test/testpage.dart';
+import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
+import 'package:quickdrop_delivery/src/features/home/home.dart';
+import 'package:quickdrop_delivery/src/features/loading/loading.dart';
 
 class AppRouter {
   final AppCubit _appCubit = sl<AppCubit>();
@@ -50,10 +49,6 @@ class AppRouter {
         path: '/home',
         builder: (BuildContext context, GoRouterState state) => Home(),
       ),
-      GoRoute(
-        path: '/test',
-        builder: (BuildContext context, GoRouterState state) => Testpage(),
-      )
     ],
   );
 }
