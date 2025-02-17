@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 
-class Theme {
+class AppTheme {
   static ThemeData? _instance;
 
   static ThemeData get instance {
@@ -15,16 +16,30 @@ class Theme {
         isDarkMode ? _createDarkTheme(context) : _createLightTheme(context);
   }
 
+  static PageTransitionsTheme get _pageTransition => PageTransitionsTheme(
+        builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+          TargetPlatform.values,
+          value: (_) => FadeForwardsPageTransitionsBuilder(),
+        ),
+      );
+
   static ThemeData _createLightTheme(BuildContext context) {
     return ThemeData(
+      scaffoldBackgroundColor: Colors.white,
       fontFamily: 'Questrial',
+      colorSchemeSeed: Constants.primaryColor,
+      pageTransitionsTheme: _pageTransition,
     );
   }
 
   static ThemeData _createDarkTheme(BuildContext context) {
     return ThemeData(
-      brightness: Brightness.dark,
-      fontFamily: 'Questrial',
-    );
+        colorSchemeSeed: Constants.secondaryColor,
+        brightness: Brightness.dark,
+        fontFamily: 'Questrial',
+        pageTransitionsTheme: _pageTransition,
+        cardTheme: CardTheme(
+          color: Colors.grey,
+        ));
   }
 }

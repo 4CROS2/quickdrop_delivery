@@ -65,6 +65,10 @@ class AppCubit extends Cubit<AppState> {
     _emitUnauthenticatedState();
   }
 
+  void changeTheme({required AppThemeState themeMode}) {
+    emit(state.copyWith(appTheme: themeMode));
+  }
+
   @override
   Future<void> close() {
     _subscription?.cancel();
