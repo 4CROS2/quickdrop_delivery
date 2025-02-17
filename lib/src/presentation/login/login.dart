@@ -89,8 +89,6 @@ class _LoginState extends State<Login> {
                   child: ListView(
                     controller: _scrollController,
                     physics: Constants.bouncingScrollPhysics,
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     children: <Widget>[
                       AuthTitle(),

@@ -3,9 +3,6 @@ import 'package:quickdrop_delivery/src/presentation/widgets/loading_status.dart'
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
-  static Page<LoadingPage> page() => const MaterialPage<LoadingPage>(
-        child: LoadingPage(),
-      );
 
   @override
   Widget build(BuildContext context) {
