@@ -1,21 +1,22 @@
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:quickdrop_delivery/src/data/datasource/active_switch_datasource.dart';
-import 'package:quickdrop_delivery/src/data/datasource/firebase_auth_datasource.dart';
-import 'package:quickdrop_delivery/src/data/datasource/orders_datasource.dart';
-import 'package:quickdrop_delivery/src/data/repository/active_switch_repository_impl.dart';
-import 'package:quickdrop_delivery/src/data/repository/auth_repository_impl.dart';
-import 'package:quickdrop_delivery/src/data/repository/orders_repository_impl.dart';
-import 'package:quickdrop_delivery/src/domain/repository/active_switch_repository.dart';
-import 'package:quickdrop_delivery/src/domain/repository/auth_repository.dart';
-import 'package:quickdrop_delivery/src/domain/repository/orders_repository.dart';
-import 'package:quickdrop_delivery/src/domain/usecase/auth_usecase.dart';
-import 'package:quickdrop_delivery/src/domain/usecase/orders_usecase.dart';
-import 'package:quickdrop_delivery/src/domain/usecase/switch_status_usecase.dart';
-import 'package:quickdrop_delivery/src/presentation/App/cubit/app_cubit.dart';
-import 'package:quickdrop_delivery/src/presentation/home/widgets/active_switch/cubit/active_switch_cubit.dart';
-import 'package:quickdrop_delivery/src/presentation/home/widgets/orders/cubit/orders_cubit.dart';
-import 'package:quickdrop_delivery/src/presentation/login/cubit/login_cubit.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/data/datasource/active_switch_datasource.dart';
+import 'package:quickdrop_delivery/src/features/app/domain/usecase/app_usecase.dart';
+import 'package:quickdrop_delivery/src/features/orders/data/datasource/orders_datasource.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/data/repository/active_switch_repository_impl.dart';
+import 'package:quickdrop_delivery/src/features/orders/data/repository/orders_repository_impl.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/domain/repository/active_switch_repository.dart';
+import 'package:quickdrop_delivery/src/features/orders/domain/repository/orders_repository.dart';
+import 'package:quickdrop_delivery/src/features/orders/domain/usecase/orders_usecase.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/domain/usecase/switch_status_usecase.dart';
+import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
+import 'package:quickdrop_delivery/src/features/orders/presentation/cubit/orders_cubit.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/data/datasource/auth_datasource.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/data/repository/auth_repository_impl.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/domain/repository/auth_repository.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/domain/usecase/auth_usecase.dart';
+import 'package:quickdrop_delivery/src/features/auth/login/presentation/cubit/login_cubit.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -30,8 +31,8 @@ Future<void> init() async {
     ),
   );
   //datasource
-  sl.registerLazySingleton<FirebaseAuthDatasource>(
-    () => FirebaseAuthDatasource(
+  sl.registerLazySingleton<AuthDatasource>(
+    () => AuthDatasource(
       googleSigin: sl<GoogleSignIn>(),
     ),
   );
@@ -44,7 +45,7 @@ Future<void> init() async {
   //repository
   sl.registerLazySingleton<AuthRepository>(
     () => IAuthRepository(
-      datasource: sl<FirebaseAuthDatasource>(),
+      datasource: sl<AuthDatasource>(),
     ),
   );
   sl.registerLazySingleton<ActiveSwitchRepository>(
@@ -58,6 +59,11 @@ Future<void> init() async {
     ),
   );
   //usecase
+  sl.registerLazySingleton<AppUsecase>(
+    () => AppUsecase(
+      repository: sl<AuthRepository>(),
+    ),
+  );
   sl.registerLazySingleton<AuthUseCase>(
     () => AuthUseCase(
       repository: sl<AuthRepository>(),
@@ -76,7 +82,7 @@ Future<void> init() async {
   //cubit
   sl.registerFactory<AppCubit>(
     () => AppCubit(
-      usecase: sl<AuthUseCase>(),
+      usecase: sl<AppUsecase>(),
     ),
   );
   sl.registerFactory<LoginCubit>(
