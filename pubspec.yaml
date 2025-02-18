@@ -34,6 +34,8 @@ dependencies:
       ref: main
   go_router: ^14.8.0
   shimmer: ^3.0.0
+  geolocator: ^13.0.2
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

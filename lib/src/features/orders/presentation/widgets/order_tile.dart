@@ -85,7 +85,6 @@ class OrderTile extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            //TODO:otros datos
                           ],
                         ),
                       ),

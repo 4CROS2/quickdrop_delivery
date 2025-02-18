@@ -4,8 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quickdrop_delivery/src/core/Theme/theme.dart';
 import 'package:quickdrop_delivery/src/core/router/router.dart';
-import 'package:quickdrop_delivery/src/injection/injection_container.dart';
+import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
 import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
+import 'package:quickdrop_delivery/src/features/location/presentation/cubit/location_cubit.dart';
+import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -59,10 +61,20 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AppCubit>(
-      create: (BuildContext context) => sl<AppCubit>(),
-      child: BlocConsumer<AppCubit, AppState>(
-        listener: (BuildContext context, AppState state) {},
+    return MultiBlocProvider(
+      providers: <BlocProvider<Object?>>[
+        BlocProvider<AppCubit>(
+          create: (BuildContext context) => sl<AppCubit>(),
+        ),
+        BlocProvider<ActiveSwitchCubit>(
+          create: (BuildContext context) => sl<ActiveSwitchCubit>(),
+        ),
+        BlocProvider<LocationCubit>(
+          create: (BuildContext context) => sl<LocationCubit>(),
+          lazy: false,
+        )
+      ],
+      child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
