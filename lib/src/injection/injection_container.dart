@@ -12,11 +12,11 @@ import 'package:quickdrop_delivery/src/features/auth/login/data/repository/auth_
 import 'package:quickdrop_delivery/src/features/auth/login/domain/repository/auth_repository.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/domain/usecase/auth_usecase.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/presentation/cubit/login_cubit.dart';
+import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/features/location/data/datasource/location_datasource.dart';
 import 'package:quickdrop_delivery/src/features/location/data/repository/location_repository_impl.dart';
 import 'package:quickdrop_delivery/src/features/location/domain/repository/location_repository.dart';
 import 'package:quickdrop_delivery/src/features/location/domain/usecase/location_usecase.dart';
-import 'package:quickdrop_delivery/src/features/location/presentation/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/features/orders/data/datasource/orders_datasource.dart';
 import 'package:quickdrop_delivery/src/features/orders/data/repository/orders_repository_impl.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/repository/orders_repository.dart';

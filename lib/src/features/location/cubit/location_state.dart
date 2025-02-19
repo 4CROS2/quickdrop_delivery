@@ -28,4 +28,7 @@ class Success extends LocationState {
 
   @override
   List<Object> get props => <Object>[position];
+
+  @override
+  bool? get stringify => true;
 }

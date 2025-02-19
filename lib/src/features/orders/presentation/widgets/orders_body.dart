@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
-import 'package:quickdrop_delivery/src/features/location/presentation/cubit/location_cubit.dart';
+import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entity.dart';
 import 'package:quickdrop_delivery/src/features/orders/presentation/widgets/empty_orders.dart';
 import 'package:quickdrop_delivery/src/features/orders/presentation/widgets/order_tile.dart';
 import 'package:quickdrop_delivery/src/features/widgets/fade_transition_states/fade_transiton_states.dart';
-import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 
 class OrdersBody extends StatefulWidget {
   const OrdersBody({
@@ -19,13 +19,6 @@ class OrdersBody extends StatefulWidget {
 }
 
 class _OrdersBodyState extends State<OrdersBody> {
-  late final LocationCubit _locationCubit;
-  @override
-  void initState() {
-    super.initState();
-    _locationCubit = sl<LocationCubit>();
-  }
-
   @override
   Widget build(BuildContext context) {
     return FadetransitonStates(
@@ -61,7 +54,14 @@ class _OrdersBodyState extends State<OrdersBody> {
                   },
                 ),
               ),
-              Text('${_locationCubit.state}')
+              BlocBuilder<LocationCubit, LocationState>(
+                builder: (BuildContext context, LocationState state) {
+                  if (state is Success) {
+                    return Text('$state');
+                  }
+                  return Text('cargando');
+                },
+              )
             ],
           ),
       },

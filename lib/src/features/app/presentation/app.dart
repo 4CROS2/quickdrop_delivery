@@ -6,7 +6,7 @@ import 'package:quickdrop_delivery/src/core/Theme/theme.dart';
 import 'package:quickdrop_delivery/src/core/router/router.dart';
 import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
 import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
-import 'package:quickdrop_delivery/src/features/location/presentation/cubit/location_cubit.dart';
+import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 
 class App extends StatefulWidget {
@@ -70,7 +70,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           create: (BuildContext context) => sl<ActiveSwitchCubit>(),
         ),
         BlocProvider<LocationCubit>(
-          create: (BuildContext context) => sl<LocationCubit>(),
+          create: (BuildContext context) => sl<LocationCubit>()..getLocation(),
           lazy: false,
         )
       ],
