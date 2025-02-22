@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quickdrop_delivery/src/core/generated/app_localizations.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/domain/entity/delivery_agent_entity.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/domain/usecase/auth_usecase.dart';
 

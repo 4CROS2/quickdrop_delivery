@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 import 'package:quickdrop_delivery/src/core/extensions/string_extensions.dart';
 import 'package:quickdrop_delivery/src/core/functions/custom_snack_bar.dart';
 import 'package:quickdrop_delivery/src/core/functions/validators.dart';
+import 'package:quickdrop_delivery/src/core/generated/app_localizations.dart';
 import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/presentation/cubit/login_cubit.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/presentation/widgets/auth_btn.dart';
