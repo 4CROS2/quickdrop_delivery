@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'package:quickdrop_delivery/src/core/Theme/theme.dart';
+import 'package:quickdrop_delivery/src/core/generated/app_localizations.dart';
 import 'package:quickdrop_delivery/src/core/router/router.dart';
 import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
 import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
