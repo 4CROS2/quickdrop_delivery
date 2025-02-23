@@ -14,7 +14,6 @@ class LocationCubit extends Cubit<LocationState> {
         super(LocationInitial());
 
   final LocationUsecase _usecase;
-  StreamSubscription<Position>? _subscription;
 
   /// Inicia la obtención de la ubicación en tiempo real.
   Future<void> getLocation() async {
@@ -56,9 +55,8 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// Inicia el stream de ubicación en tiempo real.
   Future<void> _startLocationStream() async {
-    await _subscription?.cancel(); // Cancela la suscripción anterior si existe.
-
-    _subscription = _usecase.streamLocation.listen(
+    await _usecase.startStreamLocation();
+    _usecase.streamLocation.listen(
       _onSuccess,
       onError: _onError,
     );
@@ -74,19 +72,14 @@ class LocationCubit extends Cubit<LocationState> {
     emit(Error(message: error.toString()));
   }
 
-  /// Pausa la actualización de ubicación.
-  void pauseLocationStream() {
-    _subscription?.pause();
-  }
-
-  /// Reanuda la actualización de ubicación.
-  void resumeLocationStream() {
-    _subscription?.resume();
+  void stopLocationStream() {
+    _usecase.stopStreamLocation();
+    emit(LocationInitial());
   }
 
   @override
   Future<void> close() async {
-    await _subscription?.cancel();
+    await _usecase.stopStreamLocation();
     return super.close();
   }
 }

@@ -29,17 +29,26 @@ class AppTheme {
       fontFamily: 'Questrial',
       colorSchemeSeed: Constants.primaryColor,
       pageTransitionsTheme: _pageTransition,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        // ignore: deprecated_member_use
+        year2023: false,
+      ),
     );
   }
 
   static ThemeData _createDarkTheme(BuildContext context) {
     return ThemeData(
-        colorSchemeSeed: Constants.secondaryColor,
-        brightness: Brightness.dark,
-        fontFamily: 'Questrial',
-        pageTransitionsTheme: _pageTransition,
-        cardTheme: CardTheme(
-          color: Colors.grey,
-        ));
+      colorSchemeSeed: Constants.secondaryColor,
+      brightness: Brightness.dark,
+      fontFamily: 'Questrial',
+      pageTransitionsTheme: _pageTransition,
+      cardTheme: CardTheme(
+        color: Colors.grey,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        // ignore: deprecated_member_use
+        year2023: false,
+      ),
+    );
   }
 }

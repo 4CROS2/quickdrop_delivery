@@ -71,7 +71,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           create: (BuildContext context) => sl<ActiveSwitchCubit>(),
         ),
         BlocProvider<LocationCubit>(
-          create: (BuildContext context) => sl<LocationCubit>()..getLocation(),
+          create: (BuildContext context) => sl<LocationCubit>(),
           lazy: false,
         )
       ],

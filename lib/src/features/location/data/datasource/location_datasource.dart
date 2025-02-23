@@ -1,15 +1,20 @@
+import 'dart:async';
 import 'dart:io' show Platform;
+
 import 'package:geolocator/geolocator.dart';
 
 class LocationDatasource {
-  Stream<Position> get streamLocation {
+  StreamSubscription<Position>? _subscription;
+  final StreamController<Position> _locationStreamController =
+      StreamController<Position>.broadcast();
+
+  Stream<Position> get _streamLocation {
     if (Platform.isAndroid) {
       // Configuración para Android
       return Geolocator.getPositionStream(
         locationSettings: AndroidSettings(
           accuracy: LocationAccuracy.high,
           distanceFilter: 1, // Actualización por cada metro
-          intervalDuration: const Duration(seconds: 1), // Cada 1 segundo
         ),
       );
     } else if (Platform.isIOS) {
@@ -28,6 +33,30 @@ class LocationDatasource {
           distanceFilter: 1,
         ),
       );
+    }
+  }
+
+  StreamSubscription<Position>? get subscription => _subscription;
+
+  Stream<Position> get locationStream => _locationStreamController.stream;
+
+  Future<void> startLocationStream() async {
+    await stopLocationStream();
+
+    _subscription = _streamLocation.listen(
+      (Position position) {
+        _locationStreamController.add(position);
+      },
+      onError: (Object error) {
+        _locationStreamController.addError(error);
+      },
+    );
+  }
+
+  Future<void> stopLocationStream() async {
+    if (_subscription != null) {
+      await _subscription!.cancel();
+      _subscription = null;
     }
   }
 }

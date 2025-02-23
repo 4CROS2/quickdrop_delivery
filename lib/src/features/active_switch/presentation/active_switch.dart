@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
+import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 
 class ActiveSwitch extends StatefulWidget {
@@ -50,6 +51,12 @@ class _ActiveSwitchState extends State<ActiveSwitch>
             context: context,
             message: state.message,
           );
+        }
+
+        if (state.isActive) {
+          await sl<LocationCubit>().getLocation();
+        } else {
+          sl<LocationCubit>().stopLocationStream();
         }
       },
       builder: (BuildContext context, ActiveSwitchState state) {

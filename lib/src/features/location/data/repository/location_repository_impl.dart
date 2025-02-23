@@ -9,5 +9,11 @@ class ILocationRepository implements LocationRepository {
   final LocationDatasource _datasource;
 
   @override
-  Stream<Position> streamLocation() => _datasource.streamLocation;
+  Stream<Position> get streamLocation => _datasource.locationStream;
+
+  @override
+  Future<void> stopStreamLocation() => _datasource.stopLocationStream();
+
+  @override
+  Future<void> startStreamLocation() => _datasource.startLocationStream();
 }

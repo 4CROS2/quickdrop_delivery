@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:quickdrop_delivery/src/core/extensions/string_extensions.dart';
 
 class LoadingStatus extends StatelessWidget {
@@ -13,7 +13,9 @@ class LoadingStatus extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const CupertinoActivityIndicator(),
+          const CircularProgressIndicator(
+            year2023: false,
+          ),
           Text(
             'loading...'.capitalize(),
             style: const TextStyle(
