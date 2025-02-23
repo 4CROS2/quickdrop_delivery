@@ -14,6 +14,7 @@ class LoadingStatus extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           const CircularProgressIndicator(
+            // ignore: deprecated_member_use
             year2023: false,
           ),
           Text(

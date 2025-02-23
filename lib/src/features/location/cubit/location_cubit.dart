@@ -24,7 +24,6 @@ class LocationCubit extends Cubit<LocationState> {
         emit(const Error(message: 'No se concedieron los permisos necesarios'));
         return;
       }
-      print('Starting location stream from cubit');
       await _startLocationStream();
     } catch (e) {
       emit(Error(message: 'Error al iniciar la ubicación: $e'));
@@ -51,23 +50,19 @@ class LocationCubit extends Cubit<LocationState> {
   Future<void> _startLocationStream() async {
     await _locationSubscription?.cancel();
     _locationSubscription = null;
-    print('Subscription cancelled before starting new one');
 
     await _usecase.startStreamLocation();
     _locationSubscription = _usecase.streamLocation.listen(
       (Position position) {
-        print('Position received: ${position.latitude}, ${position.longitude}');
         emit(Success(position: position));
       },
-      onError: (error) {
-        print('Error in stream: $error');
+      onError: (Object error) {
         emit(Error(message: error.toString()));
       },
     );
   }
 
   void stopLocationStream() async {
-    print('Stopping location stream from cubit');
     await _locationSubscription?.cancel();
     _locationSubscription = null;
     await _usecase.stopStreamLocation();
@@ -76,9 +71,9 @@ class LocationCubit extends Cubit<LocationState> {
 
   @override
   Future<void> close() async {
-
     await _locationSubscription?.cancel();
     await _usecase.stopStreamLocation();
+    _usecase.dispose();
     return super.close();
   }
 }

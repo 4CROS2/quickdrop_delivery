@@ -9,7 +9,11 @@ class LocationDatasource {
       StreamController<Position>.broadcast();
 
   Stream<Position> startStream() {
-    _subscription ??= Geolocator.getPositionStream(
+    if (_subscription != null) {
+      _subscription!.cancel();
+      _subscription = null;
+    }
+    _subscription = Geolocator.getPositionStream(
       locationSettings: _getLocationSettings(),
     ).listen((Position position) {
       _controller.add(position);
@@ -49,6 +53,7 @@ class LocationDatasource {
 
   void dispose() {
     _subscription?.cancel();
+    _subscription = null;
     _controller.close();
   }
 }

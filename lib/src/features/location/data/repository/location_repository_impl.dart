@@ -16,4 +16,7 @@ class ILocationRepository implements LocationRepository {
 
   @override
   Future<void> startStreamLocation() => _datasource.startStreamLocation();
+
+  @override
+  void dispose() => _datasource.dispose();
 }
