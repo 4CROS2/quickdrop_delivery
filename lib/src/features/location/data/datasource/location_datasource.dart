@@ -5,58 +5,50 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationDatasource {
   StreamSubscription<Position>? _subscription;
-  final StreamController<Position> _locationStreamController =
+  final StreamController<Position> _controller =
       StreamController<Position>.broadcast();
 
-  Stream<Position> get _streamLocation {
+  Stream<Position> startStream() {
+    _subscription ??= Geolocator.getPositionStream(
+      locationSettings: _getLocationSettings(),
+    ).listen((Position position) {
+      _controller.add(position);
+    }, onError: (Object error) {
+      _controller.addError(error);
+    });
+    return _controller.stream;
+  }
+
+  Future<void> stopStreamLocation() async {
+    await _subscription?.cancel();
+    _subscription = null;
+  }
+
+  LocationSettings _getLocationSettings() {
     if (Platform.isAndroid) {
-      // Configuración para Android
-      return Geolocator.getPositionStream(
-        locationSettings: AndroidSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 1, // Actualización por cada metro
-        ),
+      return AndroidSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
       );
     } else if (Platform.isIOS) {
-      // Para iOS se utiliza AppleSettings (no permite configurar intervalos de tiempo)
-      return Geolocator.getPositionStream(
-        locationSettings: AppleSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 1, // Actualización por cada metro
-        ),
+      return AppleSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
       );
     } else {
-      // Configuración por defecto para otras plataformas
-      return Geolocator.getPositionStream(
-        locationSettings: LocationSettings(
-          accuracy: LocationAccuracy.high,
-          distanceFilter: 1,
-        ),
+      return const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
       );
     }
   }
 
-  StreamSubscription<Position>? get subscription => _subscription;
-
-  Stream<Position> get locationStream => _locationStreamController.stream;
-
-  Future<void> startLocationStream() async {
-    await stopLocationStream();
-
-    _subscription = _streamLocation.listen(
-      (Position position) {
-        _locationStreamController.add(position);
-      },
-      onError: (Object error) {
-        _locationStreamController.addError(error);
-      },
-    );
+  Future<void> startStreamLocation() async {
+    startStream();
   }
 
-  Future<void> stopLocationStream() async {
-    if (_subscription != null) {
-      await _subscription!.cancel();
-      _subscription = null;
-    }
+  void dispose() {
+    _subscription?.cancel();
+    _controller.close();
   }
 }

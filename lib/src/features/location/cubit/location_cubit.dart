@@ -14,22 +14,23 @@ class LocationCubit extends Cubit<LocationState> {
         super(LocationInitial());
 
   final LocationUsecase _usecase;
+  StreamSubscription<Position>? _locationSubscription;
 
-  /// Inicia la obtención de la ubicación en tiempo real.
   Future<void> getLocation() async {
     try {
+      emit(Loading());
       bool hasPermission = await _checkAndRequestPermission();
       if (!hasPermission) {
+        emit(const Error(message: 'No se concedieron los permisos necesarios'));
         return;
       }
-
+      print('Starting location stream from cubit');
       await _startLocationStream();
     } catch (e) {
-      _onError(e);
+      emit(Error(message: 'Error al iniciar la ubicación: $e'));
     }
   }
 
-  /// Verifica y solicita permisos de ubicación.
   Future<bool> _checkAndRequestPermission() async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
@@ -40,45 +41,43 @@ class LocationCubit extends Cubit<LocationState> {
       if (permission.isDenied || permission.isPermanentlyDenied) {
         throw Exception('Permiso de ubicación denegado.');
       }
-
-      if (permission == PermissionStatus.permanentlyDenied) {
-        _onError('El permiso de ubicación ha sido denegado permanentemente.');
-        return false;
-      }
-
       return true;
     } catch (e) {
-      _onError('Error verificando permisos: $e');
+      emit(Error(message: 'Error verificando permisos: $e'));
       return false;
     }
   }
 
-  /// Inicia el stream de ubicación en tiempo real.
   Future<void> _startLocationStream() async {
+    await _locationSubscription?.cancel();
+    _locationSubscription = null;
+    print('Subscription cancelled before starting new one');
+
     await _usecase.startStreamLocation();
-    _usecase.streamLocation.listen(
-      _onSuccess,
-      onError: _onError,
+    _locationSubscription = _usecase.streamLocation.listen(
+      (Position position) {
+        print('Position received: ${position.latitude}, ${position.longitude}');
+        emit(Success(position: position));
+      },
+      onError: (error) {
+        print('Error in stream: $error');
+        emit(Error(message: error.toString()));
+      },
     );
   }
 
-  /// Emite estado de éxito con la nueva posición.
-  void _onSuccess(Position position) {
-    emit(Success(position: position));
-  }
-
-  /// Manejo de errores con emisión de estado.
-  void _onError(Object error) {
-    emit(Error(message: error.toString()));
-  }
-
-  void stopLocationStream() {
-    _usecase.stopStreamLocation();
+  void stopLocationStream() async {
+    print('Stopping location stream from cubit');
+    await _locationSubscription?.cancel();
+    _locationSubscription = null;
+    await _usecase.stopStreamLocation();
     emit(LocationInitial());
   }
 
   @override
   Future<void> close() async {
+
+    await _locationSubscription?.cancel();
     await _usecase.stopStreamLocation();
     return super.close();
   }
