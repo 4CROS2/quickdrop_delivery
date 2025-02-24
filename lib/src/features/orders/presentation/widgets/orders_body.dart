@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
-import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entity.dart';
 import 'package:quickdrop_delivery/src/features/orders/presentation/widgets/empty_orders.dart';
 import 'package:quickdrop_delivery/src/features/orders/presentation/widgets/order_tile.dart';
@@ -54,14 +52,6 @@ class _OrdersBodyState extends State<OrdersBody> {
                   },
                 ),
               ),
-              BlocBuilder<LocationCubit, LocationState>(
-                builder: (BuildContext context, LocationState state) {
-                  if (state is Success) {
-                    return Text('$state');
-                  }
-                  return Text('cargando');
-                },
-              )
             ],
           ),
       },
