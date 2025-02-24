@@ -8,7 +8,4 @@ class LocationUsecase {
   final LocationRepository _repository;
 
   Stream<Position> get streamLocation => _repository.streamLocation;
-  Future<void> startStreamLocation() => _repository.startStreamLocation();
-  Future<void> stopStreamLocation() => _repository.stopStreamLocation();
-  void dispose() => _repository.dispose();
 }

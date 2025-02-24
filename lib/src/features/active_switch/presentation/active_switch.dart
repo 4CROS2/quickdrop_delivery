@@ -56,7 +56,7 @@ class _ActiveSwitchState extends State<ActiveSwitch>
         if (state.isActive) {
           await sl<LocationCubit>().getLocation();
         } else {
-          sl<LocationCubit>().stopLocationStream();
+          await sl<LocationCubit>().stopLocationStream();
         }
       },
       builder: (BuildContext context, ActiveSwitchState state) {

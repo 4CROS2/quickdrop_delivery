@@ -21,12 +21,11 @@ class LocationCubit extends Cubit<LocationState> {
       emit(Loading());
       bool hasPermission = await _checkAndRequestPermission();
       if (!hasPermission) {
-        emit(const Error(message: 'No se concedieron los permisos necesarios'));
-        return;
+        throw Exception('No se concedieron los permisos necesarios');
       }
       await _startLocationStream();
     } catch (e) {
-      emit(Error(message: 'Error al iniciar la ubicación: $e'));
+      _onError('Error al iniciar la ubicación: $e');
     }
   }
 
@@ -42,38 +41,44 @@ class LocationCubit extends Cubit<LocationState> {
       }
       return true;
     } catch (e) {
-      emit(Error(message: 'Error verificando permisos: $e'));
+      _onError(e);
       return false;
     }
   }
 
   Future<void> _startLocationStream() async {
-    await _locationSubscription?.cancel();
-    _locationSubscription = null;
-
-    await _usecase.startStreamLocation();
+    await stopLocationStream();
     _locationSubscription = _usecase.streamLocation.listen(
-      (Position position) {
-        emit(Success(position: position));
-      },
-      onError: (Object error) {
-        emit(Error(message: error.toString()));
-      },
+      _onSuccess,
+      onError: _onError,
     );
   }
 
-  void stopLocationStream() async {
+  void _onSuccess(Position position) {
+    emit(
+      Success(
+        position: position,
+      ),
+    );
+  }
+
+  void _onError(Object error) {
+    emit(
+      Error(
+        message: error.toString(),
+      ),
+    );
+  }
+
+  Future<void> stopLocationStream() async {
     await _locationSubscription?.cancel();
     _locationSubscription = null;
-    await _usecase.stopStreamLocation();
     emit(LocationInitial());
   }
 
   @override
   Future<void> close() async {
-    await _locationSubscription?.cancel();
-    await _usecase.stopStreamLocation();
-    _usecase.dispose();
+    await stopLocationStream();
     return super.close();
   }
 }

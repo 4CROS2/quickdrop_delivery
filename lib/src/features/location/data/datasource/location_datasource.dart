@@ -1,59 +1,35 @@
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io';
 
 import 'package:geolocator/geolocator.dart';
 
 class LocationDatasource {
-  StreamSubscription<Position>? _subscription;
-  final StreamController<Position> _controller =
-      StreamController<Position>.broadcast();
-
-  Stream<Position> startStream() {
-    if (_subscription != null) {
-      _subscription!.cancel();
-      _subscription = null;
-    }
-    _subscription = Geolocator.getPositionStream(
-      locationSettings: _getLocationSettings(),
-    ).listen((Position position) {
-      _controller.add(position);
-    }, onError: (Object error) {
-      _controller.addError(error);
-    });
-    return _controller.stream;
+  Stream<Position> getCurrentLocation() {
+    return Geolocator.getPositionStream(
+      locationSettings: _isAndroid ? _androidSettings : _iosSettings,
+    );
   }
 
-  Future<void> stopStreamLocation() async {
-    await _subscription?.cancel();
-    _subscription = null;
-  }
-
-  LocationSettings _getLocationSettings() {
-    if (Platform.isAndroid) {
-      return AndroidSettings(
+  LocationSettings get _androidSettings => AndroidSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 1,
-      );
-    } else if (Platform.isIOS) {
-      return AppleSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 1,
-      );
-    } else {
-      return const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 1,
-      );
-    }
-  }
+        intervalDuration: Duration(milliseconds: 200),
 
-  Future<void> startStreamLocation() async {
-    startStream();
-  }
+        foregroundNotificationConfig: ForegroundNotificationConfig(
+          notificationTitle: 'Obteniendo ubicación actual',
+          notificationText:
+              'La ubicación actual se está obteniendo en segundo plano',
+          notificationChannelName: 'Ubicación actual',
+          enableWakeLock: true,
+        ),
+      );
 
-  void dispose() {
-    _subscription?.cancel();
-    _subscription = null;
-    _controller.close();
-  }
+  LocationSettings get _iosSettings => AppleSettings(
+        accuracy: LocationAccuracy.best,
+        distanceFilter: 10,
+        showBackgroundLocationIndicator: true,
+        pauseLocationUpdatesAutomatically: false,
+      );
+
+  bool get _isAndroid => Platform.isAndroid;
 }
