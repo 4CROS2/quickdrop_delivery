@@ -1,5 +1,8 @@
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
+
+
 
 abstract class LocationRepository {
-  Stream<Position> get streamLocation;
+  Stream<LocationData> get streamLocation;
+  Future<bool> requestPermission();
 }

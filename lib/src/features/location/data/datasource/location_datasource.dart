@@ -1,35 +1,34 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class LocationDatasource {
-  Stream<Position> getCurrentLocation() {
-    return Geolocator.getPositionStream(
-      locationSettings: _isAndroid ? _androidSettings : _iosSettings,
-    );
+  final Location _location = Location();
+
+  Stream<LocationData> getCurrentLocation() {
+    return _location.onLocationChanged;
   }
 
-  LocationSettings get _androidSettings => AndroidSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 1,
-        intervalDuration: Duration(milliseconds: 200),
+  Future<bool> requestPermission() async {
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
-        foregroundNotificationConfig: ForegroundNotificationConfig(
-          notificationTitle: 'Obteniendo ubicación actual',
-          notificationText:
-              'La ubicación actual se está obteniendo en segundo plano',
-          notificationChannelName: 'Ubicación actual',
-          enableWakeLock: true,
-        ),
-      );
+    serviceEnabled = await _location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await _location.requestService();
+      if (!serviceEnabled) {
+        return false;
+      }
+    }
 
-  LocationSettings get _iosSettings => AppleSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 10,
-        showBackgroundLocationIndicator: true,
-        pauseLocationUpdatesAutomatically: false,
-      );
+    permissionGranted = await _location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await _location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return false;
+      }
+    }
 
-  bool get _isAndroid => Platform.isAndroid;
+    return true;
+  }
 }
