@@ -24,7 +24,7 @@ class Success extends LocationState {
     required this.position,
   });
 
-  final Position position;
+  final LocationData position;
 
   @override
   List<Object> get props => <Object>[position];
