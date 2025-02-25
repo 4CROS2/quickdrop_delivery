@@ -11,7 +11,7 @@ class ActiveSwitchDatasource {
   String get _uid => _auth.currentUser!.uid;
 
   /// The reference field name for agent availability status.
-  String get _statusReference => 'agent_availability';
+  String get _statusReference => 'status.availability';
 
   /// Gets the reference to the delivery agent's document in Firestore.
   DocumentReference<Map<String, dynamic>>
@@ -39,9 +39,28 @@ class ActiveSwitchDatasource {
       final DocumentSnapshot<Map<String, dynamic>> data =
           await _deliveryAgentCollectionReference.get();
 
-      final bool currentStatus = data[_statusReference] as bool;
+      if (!data.exists || !data.data()!.containsKey('status')) {
+        await _deliveryAgentCollectionReference.set(
+          <String, Object>{
+            'status': <String, Object>{
+              'availability': true,
+              'location': GeoPoint(0, 0),
+              'updated_at': FieldValue.serverTimestamp(),
+            }
+          },
+          SetOptions(
+            merge: true,
+          ),
+        );
+        return;
+      }
+
+      final Map<String, dynamic> currentStatusData = data.data()!;
+      final Map<String, dynamic> currentStatusJson =
+          currentStatusData['status'] as Map<String, dynamic>;
+      final bool currentStatus = currentStatusJson['availability'] as bool;
       final bool newStatus = !currentStatus;
-      await _deliveryAgentCollectionReference.update(<String, bool>{
+      await _deliveryAgentCollectionReference.update(<String, dynamic>{
         _statusReference: newStatus,
       });
     } catch (e) {

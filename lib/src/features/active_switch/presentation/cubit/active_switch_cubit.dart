@@ -72,7 +72,9 @@ class ActiveSwitchCubit extends Cubit<ActiveSwitchState> {
   /// Updates the state to error with the given error message.
   ///
   /// The [error] parameter provides information about the error that occurred.
-  void _onError(Object error) {
+  void _onError(
+    Object error,
+  ) {
     emit(
       state.copyWith(
         isActive: false,
