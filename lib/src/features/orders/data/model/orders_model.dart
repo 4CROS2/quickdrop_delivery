@@ -3,6 +3,7 @@ import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entit
 
 class OrderModel extends OrderEntity {
   const OrderModel({
+    required super.id,
     required super.image,
     required super.productName,
     required super.address,
@@ -16,6 +17,7 @@ class OrderModel extends OrderEntity {
   static OrderModel fromJson({required Map<String, dynamic> json}) {
     final DateTime date = (json['created_at'] as Timestamp).toDate();
     return OrderModel(
+      id: json['id'] ?? '',
       image: json['image'] ?? '',
       productName: json['product_name'] ?? '',
       address: json['address'] ?? '',

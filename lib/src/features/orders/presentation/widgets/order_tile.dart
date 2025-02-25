@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entity.dart';
@@ -20,7 +21,9 @@ class OrderTile extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       type: MaterialType.card,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          context.push('/orderDetail/${_order.id}');
+        },
         child: Padding(
           padding: Constants.mainPadding / 2,
           child: Row(

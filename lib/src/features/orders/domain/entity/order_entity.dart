@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
   const OrderEntity({
+    required this.id,
     required this.image,
     required this.productName,
     required this.address,
@@ -13,6 +14,7 @@ class OrderEntity extends Equatable {
     required this.productPrice,
   });
 
+  final String id;
   final String image;
   final String productName;
   final GeoPoint address;
@@ -24,6 +26,7 @@ class OrderEntity extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
+        id,
         image,
         productName,
         address,
