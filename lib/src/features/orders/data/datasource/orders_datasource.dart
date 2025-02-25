@@ -12,7 +12,10 @@ class OrdersDatasource {
     try {
       final Stream<QuerySnapshot<Map<String, dynamic>>> data = _firestore
           .collectionGroup('orders')
-          .where('delivery_agent', isEqualTo: _uid)
+          .where(
+            'delivery_agent',
+            isEqualTo: _uid,
+          )
           .snapshots();
 
       return data.toMapJsonListStream();

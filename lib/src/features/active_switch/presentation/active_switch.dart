@@ -31,7 +31,7 @@ class _ActiveSwitchState extends State<ActiveSwitch>
     ).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.ease,
+        curve: Curves.easeInOut,
       ),
     );
   }
@@ -55,8 +55,10 @@ class _ActiveSwitchState extends State<ActiveSwitch>
 
         if (state.isActive) {
           await sl<LocationCubit>().getLocation();
+          await _controller.forward();
         } else {
           await sl<LocationCubit>().stopLocationStream();
+          await _controller.reverse();
         }
       },
       builder: (BuildContext context, ActiveSwitchState state) {

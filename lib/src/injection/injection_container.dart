@@ -146,4 +146,5 @@ Future<void> init() async {
       usecase: sl<DeliveryLocationUsecase>(),
     ),
   );
+  print('inizializado 🔥');
 }

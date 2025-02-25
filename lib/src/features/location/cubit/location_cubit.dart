@@ -8,8 +8,9 @@ import 'package:quickdrop_delivery/src/features/location/domain/usecase/location
 part 'location_state.dart';
 
 class LocationCubit extends Cubit<LocationState> {
-  LocationCubit({required LocationUsecase usecase})
-      : _usecase = usecase,
+  LocationCubit({
+    required LocationUsecase usecase,
+  })  : _usecase = usecase,
         super(LocationInitial());
 
   final LocationUsecase _usecase;

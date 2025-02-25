@@ -7,8 +7,8 @@ sealed class DeliveryLocationState extends Equatable {
   List<Object> get props => <Object>[];
 }
 
-class Loading extends DeliveryLocationState{}
+class Loading extends DeliveryLocationState {}
 
-class Error extends DeliveryLocationState{}
+class Error extends DeliveryLocationState {}
 
-class Success extends DeliveryLocationState{}
+class Success extends DeliveryLocationState {}
