@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'package:quickdrop_delivery/src/core/Theme/theme.dart';
 import 'package:quickdrop_delivery/src/core/generated/app_localizations.dart';
 import 'package:quickdrop_delivery/src/core/router/router.dart';
 import 'package:quickdrop_delivery/src/features/active_switch/presentation/cubit/active_switch_cubit.dart';
 import 'package:quickdrop_delivery/src/features/app/presentation/cubit/app_cubit.dart';
-import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/injection/injection_container.dart';
 
 class App extends StatefulWidget {
@@ -70,9 +68,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         BlocProvider<ActiveSwitchCubit>(
           create: (BuildContext context) => sl<ActiveSwitchCubit>(),
         ),
-        BlocProvider<LocationCubit>(
-          create: (BuildContext context) => sl<LocationCubit>(),
-        )
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {

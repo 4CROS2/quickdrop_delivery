@@ -18,10 +18,14 @@ class IActiveSwitchRepository implements ActiveSwitchRepository {
   @override
   Stream<bool> getStatus() {
     final Stream<Map<String, dynamic>> response = _datasource.getStatus();
+    final Stream<bool> status = response.map(
+      (Map<String, dynamic> event) {
+        final Map<String, dynamic> status =
+            event['status'] ?? <String, dynamic>{};
 
-    final Stream<bool> status = response.map((Map<String, dynamic> event) {
-      return event['agent_availability'] as bool;
-    });
+        return status['availability'] ?? false;
+      },
+    );
     return status;
   }
 

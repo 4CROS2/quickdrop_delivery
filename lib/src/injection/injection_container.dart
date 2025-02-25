@@ -12,6 +12,11 @@ import 'package:quickdrop_delivery/src/features/auth/login/data/repository/auth_
 import 'package:quickdrop_delivery/src/features/auth/login/domain/repository/auth_repository.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/domain/usecase/auth_usecase.dart';
 import 'package:quickdrop_delivery/src/features/auth/login/presentation/cubit/login_cubit.dart';
+import 'package:quickdrop_delivery/src/features/delivery_location/cubit/delivery_location_cubit.dart';
+import 'package:quickdrop_delivery/src/features/delivery_location/data/datasource/delivery_location_datasource.dart';
+import 'package:quickdrop_delivery/src/features/delivery_location/data/repository/delivery_location_repository_impl.dart';
+import 'package:quickdrop_delivery/src/features/delivery_location/domain/repository/delivery_location_repository.dart';
+import 'package:quickdrop_delivery/src/features/delivery_location/domain/usecase/delivery_location_usecase.dart';
 import 'package:quickdrop_delivery/src/features/location/cubit/location_cubit.dart';
 import 'package:quickdrop_delivery/src/features/location/data/datasource/location_datasource.dart';
 import 'package:quickdrop_delivery/src/features/location/data/repository/location_repository_impl.dart';
@@ -50,6 +55,9 @@ Future<void> init() async {
   sl.registerLazySingleton<LocationDatasource>(
     () => LocationDatasource(),
   );
+  sl.registerLazySingleton<DeliveryLocationDatasource>(
+    () => DeliveryLocationDatasource(),
+  );
   //repository
   sl.registerLazySingleton<AuthRepository>(
     () => IAuthRepository(
@@ -69,6 +77,11 @@ Future<void> init() async {
   sl.registerLazySingleton<LocationRepository>(
     () => ILocationRepository(
       datasource: sl<LocationDatasource>(),
+    ),
+  );
+  sl.registerLazySingleton<DeliveryLocationRepository>(
+    () => IDeliveryLocationRepository(
+      datasource: sl<DeliveryLocationDatasource>(),
     ),
   );
   //usecase
@@ -97,6 +110,11 @@ Future<void> init() async {
       repository: sl<LocationRepository>(),
     ),
   );
+  sl.registerLazySingleton<DeliveryLocationUsecase>(
+    () => DeliveryLocationUsecase(
+      repository: sl<DeliveryLocationRepository>(),
+    ),
+  );
   //cubit
   sl.registerFactory<AppCubit>(
     () => AppCubit(
@@ -121,6 +139,11 @@ Future<void> init() async {
   sl.registerLazySingleton<LocationCubit>(
     () => LocationCubit(
       usecase: sl<LocationUsecase>(),
+    ),
+  );
+  sl.registerFactory<DeliveryLocationCubit>(
+    () => DeliveryLocationCubit(
+      usecase: sl<DeliveryLocationUsecase>(),
     ),
   );
 }
