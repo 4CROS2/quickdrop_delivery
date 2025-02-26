@@ -38,13 +38,12 @@ class AppTheme {
 
   static ThemeData _createDarkTheme(BuildContext context) {
     return ThemeData(
-      colorSchemeSeed: Constants.secondaryColor,
+      colorSchemeSeed: Constants.primaryColor,
       brightness: Brightness.dark,
       fontFamily: 'Questrial',
       pageTransitionsTheme: _pageTransition,
-      cardTheme: CardTheme(
-        color: Colors.grey,
-      ),
+      cardColor: Colors.grey.shade900,
+      primaryColorDark: Constants.secondaryColor,
       progressIndicatorTheme: ProgressIndicatorThemeData(
         // ignore: deprecated_member_use
         year2023: false,
