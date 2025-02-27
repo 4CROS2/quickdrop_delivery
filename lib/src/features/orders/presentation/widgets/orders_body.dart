@@ -31,7 +31,7 @@ class _OrdersBodyState extends State<OrdersBody> {
                   top: Constants.mainPadding.top,
                 ),
                 child: Text(
-                  'Domicilios pendientes',
+                  'Domicilios disponibles',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w800,

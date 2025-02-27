@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quickdrop_delivery/src/features/orders/data/model/address_model.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entity.dart';
 
 class OrderModel extends OrderEntity {
@@ -20,7 +21,9 @@ class OrderModel extends OrderEntity {
       id: json['id'] ?? '',
       image: json['image'] ?? '',
       productName: json['product_name'] ?? '',
-      address: json['address'] ?? '',
+      address: AddressModel.fromJson(
+        json: json['address'] as Map<String, dynamic>,
+      ),
       createdAt: date,
       customerName: '',
       contactNumber: '',

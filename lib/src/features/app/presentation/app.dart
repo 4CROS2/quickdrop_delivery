@@ -26,12 +26,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     _appRouter = AppRouter();
   }
 
-/*   bool get _deviceThemeDarkMode {
+  bool get _deviceThemeDarkMode {
     final Brightness brightness =
         View.of(context).platformDispatcher.platformBrightness;
     final bool brState = brightness == Brightness.dark;
     return brState;
-  } */
+  }
 
   @override
   void didChangeDependencies() {
@@ -49,7 +49,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void _initializeTheme(BuildContext context) {
     AppTheme.initialize(
       context,
-      isDarkMode: false, //_deviceThemeDarkMode,
+      isDarkMode: _deviceThemeDarkMode,
     );
   }
 

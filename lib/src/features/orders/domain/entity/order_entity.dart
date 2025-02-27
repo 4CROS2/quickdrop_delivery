@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:quickdrop_delivery/src/features/orders/domain/entity/address_entity.dart';
 
 class OrderEntity extends Equatable {
   const OrderEntity({
@@ -17,7 +17,7 @@ class OrderEntity extends Equatable {
   final String id;
   final String image;
   final String productName;
-  final GeoPoint address;
+  final AddressEntity address;
   final DateTime createdAt;
   final String customerName;
   final String contactNumber;
