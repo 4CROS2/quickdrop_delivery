@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location/location.dart';
+import 'package:quickdrop_delivery/src/features/location/domain/entity/location_and_sensor_entity.dart';
 import 'package:quickdrop_delivery/src/features/location/domain/usecase/location_usecase.dart';
 
 part 'location_state.dart';
@@ -14,7 +14,7 @@ class LocationCubit extends Cubit<LocationState> {
         super(LocationInitial());
 
   final LocationUsecase _usecase;
-  StreamSubscription<LocationData>? _locationSubscription;
+  StreamSubscription<LocationAndSensorEntity>? _locationSubscription;
 
   Future<void> getLocation() async {
     try {
@@ -37,10 +37,10 @@ class LocationCubit extends Cubit<LocationState> {
     );
   }
 
-  void _onSuccess(LocationData locationData) {
+  void _onSuccess(LocationAndSensorEntity locationData) {
     emit(
       Success(
-        position: locationData,
+        gps: locationData,
       ),
     );
   }

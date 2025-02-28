@@ -21,13 +21,13 @@ class Error extends LocationState {
 
 class Success extends LocationState {
   const Success({
-    required this.position,
+    required this.gps,
   });
 
-  final LocationData position;
+  final LocationAndSensorEntity gps;
 
   @override
-  List<Object> get props => <Object>[position];
+  List<Object> get props => <Object>[gps];
 
   @override
   bool? get stringify => true;

@@ -1,4 +1,4 @@
-import 'package:location/location.dart';
+import 'package:quickdrop_delivery/src/features/location/domain/entity/location_and_sensor_entity.dart';
 import 'package:quickdrop_delivery/src/features/location/domain/repository/location_repository.dart';
 
 class LocationUsecase {
@@ -7,6 +7,7 @@ class LocationUsecase {
 
   final LocationRepository _repository;
 
-  Stream<LocationData> get streamLocation => _repository.streamLocation;
+  Stream<LocationAndSensorEntity> get streamLocation =>
+      _repository.streamLocation;
   Future<bool> requestPermission() => _repository.requestPermission();
 }

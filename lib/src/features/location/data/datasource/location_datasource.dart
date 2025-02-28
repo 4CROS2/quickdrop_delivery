@@ -1,12 +1,34 @@
 import 'dart:async';
 
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:location/location.dart';
+import 'package:quickdrop_delivery/src/features/location/data/model/location_and_sensor_model.dart';
+import 'package:rxdart/rxdart.dart';
 
 class LocationDatasource {
   final Location _location = Location();
 
-  Stream<LocationData> getCurrentLocation() {
-    return _location.onLocationChanged;
+  Stream<LocationAndSensorModel> getCurrentLocation() {
+    // Stream de ubicación
+    final Stream<LocationData> locationStream = _location.onLocationChanged;
+
+    final Stream<double> headingStream = FlutterCompass.events!
+        .map((CompassEvent event) => event.heading ?? 0.0);
+
+    // Combinar ambos streams usando StreamZip
+    return Rx.combineLatest2(
+      locationStream,
+      headingStream,
+      (
+        LocationData location,
+        double heading,
+      ) {
+        return LocationAndSensorModel(
+          location: location,
+          magnetometer: MagnetometerModel(degree: heading),
+        );
+      },
+    );
   }
 
   Future<bool> requestPermission() async {

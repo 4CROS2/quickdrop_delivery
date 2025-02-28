@@ -57,10 +57,10 @@ class _OrderDetailMapState extends State<OrderDetailMap>
         if (state is Success) {
           _animationController.forward();
           try {
-            final double latitude = state.position.latitude!;
-            final double longitude = state.position.longitude!;
+            final double latitude = state.gps.location.latitude!;
+            final double longitude = state.gps.location.longitude!;
             final LatLng position = LatLng(latitude, longitude);
-            final double headingInDegrees = state.position.heading ?? 0;
+            final double headingInDegrees = state.gps.magnetometer.degree;
             return Stack(
               children: <Widget>[
                 // El mapa como capa base
@@ -87,10 +87,9 @@ class _OrderDetailMapState extends State<OrderDetailMap>
                           width: 40,
                           height: 40,
                           child: Transform.rotate(
-                            angle: headingInDegrees *
-                                (math.pi / 180), // Convertir grados a radianes
+                            angle: headingInDegrees * (math.pi / 180),
                             child: const Icon(
-                              Icons.arrow_upward, // Flecha que indica dirección
+                              Icons.arrow_upward,
                               color: Colors.blue,
                               size: 30,
                             ),
