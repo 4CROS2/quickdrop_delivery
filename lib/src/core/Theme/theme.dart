@@ -42,8 +42,9 @@ class AppTheme {
       brightness: Brightness.dark,
       fontFamily: 'Questrial',
       pageTransitionsTheme: _pageTransition,
-      cardColor: Colors.grey.shade900,
-      primaryColorDark: Constants.secondaryColor,
+      cardColor: Colors.grey.shade800,
+      scaffoldBackgroundColor: Colors.grey.shade900,
+      primaryColorDark: Constants.primaryColor,
       progressIndicatorTheme: ProgressIndicatorThemeData(
         // ignore: deprecated_member_use
         year2023: false,

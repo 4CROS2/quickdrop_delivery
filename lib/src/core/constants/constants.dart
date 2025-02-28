@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Constants {
   static double minHeight = 100.0;
-  static double paddingValue = 24;
+  static double paddingValue = 16;
   static double borderValue = paddingValue;
 
   ///main border radius

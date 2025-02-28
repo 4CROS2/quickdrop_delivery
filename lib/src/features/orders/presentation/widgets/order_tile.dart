@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quickdrop_delivery/src/core/constants/constants.dart';
 import 'package:quickdrop_delivery/src/features/orders/domain/entity/order_entity.dart';
@@ -155,7 +156,9 @@ class _OrderTileState extends State<OrderTile>
                     spacing: Constants.paddingValue / 2,
                     children: <Widget>[
                       OrderTuleButton(
-                        onTap: () {},
+                        onTap: () {
+                          context.push('/orderDetail/${widget._order.id}');
+                        },
                         text: 'aceptar',
                         color: Constants.primaryColor,
                         textColor: Colors.white,
