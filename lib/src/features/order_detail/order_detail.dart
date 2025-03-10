@@ -36,8 +36,13 @@ class _OrderDetailState extends State<OrderDetail> {
               ),
             ),
             actions: <Widget>[
-              HeaderButton(
-                icon: Icons.qr_code_scanner_rounded,
+              Padding(
+                padding: EdgeInsets.only(
+                  right: Constants.paddingValue,
+                ),
+                child: HeaderButton(
+                  icon: Icons.qr_code_scanner_rounded,
+                ),
               )
             ],
             systemOverlayStyle: SystemUiOverlayStyle.dark,

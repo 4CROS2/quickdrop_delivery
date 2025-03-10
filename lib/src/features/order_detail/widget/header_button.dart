@@ -22,8 +22,8 @@ class HeaderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 40, // Tamaño fijo para el botón
-      height: 40,
+      width: 50, // Tamaño fijo para el botón
+      height: 50,
       child: ClipRRect(
         borderRadius: Constants.mainBorderRadius / 2,
         child: Material(

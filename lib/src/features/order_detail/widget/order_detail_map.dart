@@ -61,17 +61,19 @@ class _OrderDetailMapState extends State<OrderDetailMap>
             final double longitude = state.gps.location.longitude!;
             final LatLng position = LatLng(latitude, longitude);
             final double headingInDegrees = state.gps.magnetometer.degree;
+            final double rotation = (headingInDegrees * (math.pi / 180));
             return Stack(
               children: <Widget>[
                 // El mapa como capa base
                 FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                      initialZoom: 16,
-                      initialCenter: position,
-                      interactionOptions: InteractionOptions(
-                          flags:
-                              InteractiveFlag.all & ~InteractiveFlag.rotate)),
+                    initialZoom: 16,
+                    initialCenter: position,
+                    interactionOptions: InteractionOptions(
+                      flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                    ),
+                  ),
                   children: <Widget>[
                     TileLayer(
                       urlTemplate:
@@ -79,6 +81,7 @@ class _OrderDetailMapState extends State<OrderDetailMap>
                       userAgentPackageName:
                           'com.quickdropltda.quickdrop_delivery',
                       retinaMode: true,
+                      tileDimension: 256,
                     ),
                     MarkerLayer(
                       markers: <Marker>[
@@ -87,11 +90,12 @@ class _OrderDetailMapState extends State<OrderDetailMap>
                           width: 40,
                           height: 40,
                           child: Transform.rotate(
-                            angle: headingInDegrees * (math.pi / 180),
-                            child: const Icon(
-                              Icons.arrow_upward,
-                              color: Colors.blue,
-                              size: 30,
+                            angle: rotation,
+                            child: Image.asset(
+                              'assets/images/mark/delivery (30).webp',
+                              fit: BoxFit.cover,
+                              width: 60,
+                              height: 60,
                             ),
                           ),
                         ),
@@ -100,23 +104,24 @@ class _OrderDetailMapState extends State<OrderDetailMap>
                   ],
                 ),
                 // Capa de desenfoque animada
-                AnimatedBuilder(
-                  animation: _animation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Positioned.fill(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(
-                          sigmaX: _animation.value,
-                          sigmaY: _animation.value,
+                if (!_animationController.isCompleted)
+                  AnimatedBuilder(
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      return Positioned.fill(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(
+                            sigmaX: _animation.value,
+                            sigmaY: _animation.value,
+                          ),
+                          child: child,
                         ),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Material(
-                    color: Colors.transparent,
+                      );
+                    },
+                    child: Material(
+                      color: Colors.transparent,
+                    ),
                   ),
-                ),
               ],
             );
           } catch (e) {
